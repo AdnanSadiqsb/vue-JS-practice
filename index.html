@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .box{
+            height: 100px;
+            width: 100px;
+            background-color: rebeccapurple;
+        }
+        .two{
+            background-color: aqua;
+        }
+        .three{
+            background-color: blue;
+        }
+        [v-cloak]{
+            display: none;
+        }
+        .box2{
+            height: 100px;
+            width: 100px;
+            background-color: black;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="app" v-cloak>
+        {{ greeting }}
+        <hr>
+
+        <div v-if="isVisible" class="box"></div>
+        <div v-else-if="isVisible2" class="box two"></div>
+        <div v-else class="box  three"></div>
+
+        <div class="box2" v-if="box2Visible">
+
+        </div>
+        <button  @click="count++">click to increase {{count}}</button>
+        <button v-on:click="toggleBox">show box</button>
+
+        <input v-model="greeting"  type="text" @keyup.enter="greet(greeting+'!!!!')">
+    </div> 
+   
+
+
+<script src="https://unpkg.com/vue@next"></script>
+
+<script>
+    let app=Vue.createApp({
+        data:function(){
+            return{
+                greeting:'hlo vue',
+                isVisible:false,
+                isVisible2:true,
+                box2Visible:false,
+                count:0,
+            }
+        },
+        methods:{
+            toggleBox(){
+                this.box2Visible=!this.box2Visible
+            
+            },
+            greet(greeting){
+                console.log(greeting)
+            }
+        }
+    })
+  
+    app.mount('#app')
+ 
+</script>
+
+</body>
+</html>

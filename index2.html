@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>components and props send to child components </title>
+    <style>
+        [cloak]{
+            display: none;
+        }
+        .loginForm{
+           
+        }
+        input{
+            display: block;
+            margin: 1rem;
+
+        }
+    </style>
+</head>
+<body>
+    <div id="app" c-cloak>
+
+        <login-form/>
+       
+    </div>
+    <script src="https://unpkg.com/vue@next"></script>
+    <script>
+        let app=Vue.createApp({
+            data:function(){
+                return{
+
+                    loginText:"Login Form"
+                }
+            },
+            methods:{
+
+            }
+
+        })
+        app.component('login-form',{
+            template:`
+            <form class="loginForm" @submit="handleSubmit">
+                <h1>{{title}}</h1>
+                <!-- send value of emaiLabel -->
+                <custom-input v-model="email"  :label="emailLabel"/>
+                <!-- send static value -->
+                <custom-input v-model="password" label="password"/>
+                <button> Log in</button>
+            </form>
+            `,
+            components:['custom-input'],
+            data(){
+                 return{
+                    title:'Login Form',
+                    email:'wfdsa',
+                    password:'jsaf',
+                    emailLabel:'Email',
+                }
+            },
+            methods:{
+                handleSubmit(e){
+                    e.preventDefault()
+                    console.log(this.email, this.password)
+                }
+
+            }
+        })
+        
+        app.component('custom-input',{
+
+            template:`
+            <label for="">
+                {{label}}
+                <input type="text"  v-model="inputVal" />
+            </label>
+            `
+            ,
+            props:['label', 'modelValue'],
+            // move child values to parent
+            computed:{
+                inputVal:{
+                    get(){
+                        return this.modelValue
+
+                    },set(value){
+                        this.$emit('update:modelValue', value)
+                    }
+                }
+            },
+        })
+        app.mount('#app')
+    </script>
+
+
+</body>
+</html>
